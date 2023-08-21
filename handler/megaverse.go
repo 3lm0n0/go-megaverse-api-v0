@@ -25,8 +25,8 @@ func NewPolyanetHandler(s service.PolyanetService) *Handler {
 }
 
 func(h *Handler) PolyanetHandlers() {
-	http.HandleFunc("/megaverse/polyanet", h.handlePolyanets)
-	http.HandleFunc("/megaverse/polyanet/cross", h.handlePolyanetsCross)
+	http.HandleFunc("/megaverse/polyanets", h.handlePolyanets)
+	http.HandleFunc("/megaverse/polyanets/cross", h.handlePolyanetsCross)
 	http.HandleFunc("/megaverse/logo", h.handleCreateLogo)
 }
 

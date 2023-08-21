@@ -21,7 +21,7 @@ Matrix parameters:
 ```
 ## Solution API usage.
 ```
-URL: localhost:port/polyanets
+URL: localhost:port/megaverse/polyanets
     Methods allowed
         POST: To create a single polyanet.
             Body:{
@@ -35,7 +35,7 @@ URL: localhost:port/polyanets
             }
 ```
 ```
-URL: localhost:port/generatePolyanetsCross
+URL: localhost:port/megaverse/polyanets/cross
     Methods allowed
         POST: To generate cross.
             Body: {
@@ -45,6 +45,24 @@ URL: localhost:port/generatePolyanetsCross
             }
 ```
 
+## Phase 2 - Logo.
+```
+URL: localhost:port/megaverse/logo
+    Methods allowed
+        POST: To create a logo.
+            Body:{
+                "goal":[
+                    ["SPACE","SPACE","SPACE", ... ,"SPACE"]
+                    ["SPACE","SPACE","SPACE", ... ,"SPACE"]
+                    ["SPACE","SPACE","SPACE", ... ,"SPACE"]
+                        .       .       .           .
+                        .       .       .           .
+                        .       .       .           .
+                    ["SPACE","SPACE","SPACE", ... ,"SPACE"]
+                ]
+                
+            }
+```
 
 # Commands Usage:
 ```
