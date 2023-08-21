@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"megaverse/domain"
 	handler "megaverse/handler"
 	service "megaverse/service"
 
@@ -26,7 +27,9 @@ func main() {
 	// Initialize the polyanet service paramns.
 	polyanetServiceParams := service.PolyanetServiceParams{
 		ApiUrl: crossmintApiUrl,
-		CandidateId: candidateId,
+		Candidate: domain.Candidate{
+			CandidateId: candidateId,
+		},
 	}
 
 	// Initialize the polyanet service.

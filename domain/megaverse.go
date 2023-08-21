@@ -1,5 +1,13 @@
 package domain
 
+type MegaverseGoal struct {
+	Goal [][]string `json:"goal"`
+}
+
+type Candidate struct {
+	CandidateId string
+}
+
 type Polyanet struct {
 	CandidateId string
 	Row int `json: "row"`

@@ -4,6 +4,8 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
+	"megaverse/domain"
 	service "megaverse/service"
 	"net/http"
 )
@@ -23,13 +25,14 @@ func NewPolyanetHandler(s service.PolyanetService) *Handler {
 }
 
 func(h *Handler) PolyanetHandlers() {
-	http.HandleFunc("/polyanet", h.handlePolyanets)
-	http.HandleFunc("/generatePolyanetsCross", h.handlePolyanetsDiagonal)
+	http.HandleFunc("/megaverse/polyanet", h.handlePolyanets)
+	http.HandleFunc("/megaverse/polyanet/cross", h.handlePolyanetsCross)
+	http.HandleFunc("/megaverse/logo", h.handleCreateLogo)
 }
 
 func(h *Handler) Handlers() {
 	http.HandleFunc("/polyanets", h.handlePolyanets)
-	http.HandleFunc("/generatePolyanetsCross", h.handlePolyanetsDiagonal)
+	http.HandleFunc("/generatePolyanetsCross", h.handlePolyanetsCross)
 }
 
 func(h *Handler) handlePolyanets(response http.ResponseWriter, request *http.Request) {
@@ -67,17 +70,43 @@ func(h *Handler) handleCreatePolyanet(response http.ResponseWriter, request *htt
 	writeJSONResponse(response, http.StatusCreated, polyanet)
 }
 
-func(h *Handler) handlePolyanetsDiagonal(response http.ResponseWriter, request *http.Request) {
+func(h *Handler) handlePolyanetsCross(response http.ResponseWriter, request *http.Request) {
 	if request.Method != http.MethodPost { 
 		writeJSONResponse(response, http.StatusMethodNotAllowed, nil)
 	}
-	matrix, err := h.service.GeneratePolyantesCross(context.Background(), request)
+	matrix, err := h.service.CreatePolyantesCross(context.Background(), request)
 	if err != nil {
 		writeJSONResponse(response, http.StatusInternalServerError, err)
 		return	
 	}
 
 	writeJSONResponse(response, http.StatusOK, matrix)
+}
+
+func(h *Handler) handleCreateLogo(response http.ResponseWriter, request *http.Request) {
+	if request.Method != http.MethodPost { 
+		writeJSONResponse(response, http.StatusMethodNotAllowed, nil)
+	}
+	// read request body.
+	requestBody, err := ioutil.ReadAll(request.Body)
+	if err != nil  {
+		writeJSONResponse(response, http.StatusInternalServerError, err)
+	}
+	// unmarshal request body.
+	var matrix *domain.MegaverseGoal
+	err = json.Unmarshal(requestBody, &matrix)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+	// create logo.
+	m, err := h.service.CreateLogo(context.Background(), matrix)
+	if err != nil {
+		writeJSONResponse(response, http.StatusInternalServerError, err)
+		return	
+	}
+
+	writeJSONResponse(response, http.StatusCreated, &m.Goal)
 }
 
 func writeJSONResponse(response http.ResponseWriter, status int, value any) error {
